@@ -4,9 +4,7 @@ FROM node:0.12
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY . /usr/src/app/
-RUN npm install
+COPY entrypoint.sh /
 
+CMD [ "/entrypoint.sh" ]
 EXPOSE 5602
-CMD [ "npm", "start" ]
