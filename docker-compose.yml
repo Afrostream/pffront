@@ -1,0 +1,61 @@
+version: '2'
+services:
+  afrostreampostgres:
+    environment:
+     - POSTGRES_PASSWORD=postgres
+    volumes:
+     - ./data/postgresql:/var/lib/postgresql/data
+    build: ./afrostream-postgres
+  rabbitmq:
+    environment:
+     - RABBITMQ_DEFAULT_USER=rabbitmq
+     - RABBITMQ_DEFAULT_PASS=rabbitmq
+    image: rabbitmq:3-management
+  afrostreamfrontend:
+    environment:
+      - ALGOLIA_API_KEY=3e6547172fb6d80b2ae02d6369edfc72
+      - ALGOLIA_APP_ID=3OKNPL7ZVA
+      - API_CLIENT_AUTHORITY=api.afrostream.tv
+      - API_CLIENT_END_POINT=https://api.afrostream.tv
+      - API_CLIENT_PROTOCOL=https
+      - API_END_POINT=http://localhost:XXXX
+      - API_IMAGES_AUTHORITY=images.cdn.afrostream.net
+      - API_IMAGES_END_POINT=https://images.cdn.afrostream.net
+      - API_IMAGES_PROTOCOL=https
+      - BITLY_ACCESS_TOKEN=3f7014f52dd257e8e502a3682835721020713736
+      - BITLY_API_KEY=R_8199c11a3938481aa8fdd538530b9137
+      - BITLY_CLIENT_ID=6919ad7c69fc680e8c1746e329ce06ebf4528640
+      - BRAINTREE_PUBLIC_KEY=production_f4y3q99v_x6hsrp62xgzbfj98
+      - BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-multi.git
+      - CHROMECAST_ID=
+      - DOMAIN_HOST=afrostream.tv
+      - FB_TRACKING_ID=914487875264661
+      - GA_TRACKING_ID=UA-47871575-1
+      - GOCARDLESS_PUBLIC_KEY=CYgpKfDiPnYMvQ5BFGE_3s2IHIaSbSzQ4Tmg2Vsl
+      - GOOGLE_ANALYTICS=UA-47871575-1
+      - HEROKU_APP_ID=92fb7d11-a2a0-4b49-9344-87e0b1d84eea
+      - HEROKU_APP_NAME=afrostream
+      - HEROKU_RELEASE_VERSION=v124
+      - HEROKU_SLUG_COMMIT=2234b706a81b841fbadb72560c931bf85d6816fe
+      - HEROKU_SLUG_DESCRIPTION=Deploy 334451f
+      - LIBRATO_PASSWORD=89e73b2f58f85ff7
+      - LIBRATO_TOKEN=b0b6ff7d039d0576ac3237ed63947292e3025bb942bdddb0f788f6a56023c1ce
+      - LIBRATO_USER=app38190314@heroku.com
+      - NODE_MODULES_CACHE=true
+      - NPM_CONFIG_PRODUCTION=true
+      - OAUTH_BOUYGUES_ENABLED=true
+      - OAUTH_FACEBOOK_ENABLED=true
+      - OAUTH_ORANGE_ENABLED=true
+      - RECURLY_PUBLIC_KEY=sjc-WOBbERhzqRX5AJ6hVGOPzv
+      - SENDBIRD_API_TOKEN=3915d25ef28e538be42206f17ff7345bb7e6a6cb
+      - SENDBIRD_APP_ID=BEACEB74-4847-4DB1-94F2-F0F04688392A
+      - SENTRY_DSN=https://24502de12b75437cb3783c395bd466f0:0d9f657cbc81459ba70c0ad132536a2d@app.getsentry.com/59853
+      - SPONSORSHIP_BILLING_UUID=d9e879c7-e445-409f-ad44-817e30e62fc0
+      - STRIPE_PUBLIC_KEY=pk_test_s9YFHvFFIjo2gdAL5x4k2ISh
+      - YOUBORA_ID=afrostream
+    ports:
+      - "5600:3000"
+      - "5601:8081"
+    volumes:
+      - ./src/afrostream-front-end:/usr/src/app
+    build: ./afrostream-front-end
