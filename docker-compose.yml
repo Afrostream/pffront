@@ -38,7 +38,7 @@ services:
     ports:
       - "5601:5601"
     volumes:
-      - ./afrostream-api-v1/src:/usr/src/app
+      - ./src/afrostream-api-v1:/usr/src/app
   afrostreambackend:
     environment:
       - ALGOLIA_API_KEY=47d48040a13e973aca2ea9f492eca17e
@@ -76,10 +76,51 @@ services:
     ports:
       - "5602:5602"
     volumes:
-      - ./afrostream-back-end/src:/usr/src/app
+      - ./src/afrostream-back-end:/usr/src/app
     depends_on:
       - afrostreampostgres
       - rabbitmq
     links:
       - afrostreampostgres
       - rabbitmq
+  afrostreamfrontend:
+    environment:
+      - ALGOLIA_API_KEY=3e6547172fb6d80b2ae02d6369edfc72
+      - ALGOLIA_APP_ID=3OKNPL7ZVA
+      - API_CLIENT_AUTHORITY=api.afrostream.tv
+      - API_CLIENT_END_POINT=https://api.afrostream.tv
+      - API_CLIENT_PROTOCOL=https
+      - API_END_POINT=http://localhost:XXXX
+      - API_IMAGES_AUTHORITY=images.cdn.afrostream.net
+      - API_IMAGES_END_POINT=https://images.cdn.afrostream.net
+      - API_IMAGES_PROTOCOL=https
+      - BITLY_ACCESS_TOKEN=3f7014f52dd257e8e502a3682835721020713736
+      - BITLY_API_KEY=R_8199c11a3938481aa8fdd538530b9137
+      - BITLY_CLIENT_ID=6919ad7c69fc680e8c1746e329ce06ebf4528640
+      - BRAINTREE_PUBLIC_KEY=production_f4y3q99v_x6hsrp62xgzbfj98
+      - CHROMECAST_ID=
+      - DOMAIN_HOST=afrostream.tv
+      - FB_TRACKING_ID=914487875264661
+      - GA_TRACKING_ID=UA-47871575-1
+      - GOCARDLESS_PUBLIC_KEY=CYgpKfDiPnYMvQ5BFGE_3s2IHIaSbSzQ4Tmg2Vsl
+      - GOOGLE_ANALYTICS=UA-47871575-1
+      - LIBRATO_PASSWORD=89e73b2f58f85ff7
+      - LIBRATO_TOKEN=b0b6ff7d039d0576ac3237ed63947292e3025bb942bdddb0f788f6a56023c1ce
+      - LIBRATO_USER=app38190314@heroku.com
+      - OAUTH_BOUYGUES_ENABLED=true
+      - OAUTH_FACEBOOK_ENABLED=true
+      - OAUTH_ORANGE_ENABLED=true
+      - RECURLY_PUBLIC_KEY=sjc-WOBbERhzqRX5AJ6hVGOPzv
+      - SENDBIRD_API_TOKEN=3915d25ef28e538be42206f17ff7345bb7e6a6cb
+      - SENDBIRD_APP_ID=BEACEB74-4847-4DB1-94F2-F0F04688392A
+      - SENTRY_DSN=https://24502de12b75437cb3783c395bd466f0:0d9f657cbc81459ba70c0ad132536a2d@app.getsentry.com/59853
+      - SPONSORSHIP_BILLING_UUID=d9e879c7-e445-409f-ad44-817e30e62fc0
+      - STRIPE_PUBLIC_KEY=pk_test_s9YFHvFFIjo2gdAL5x4k2ISh
+      - YOUBORA_ID=afrostream
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+      - "8081:8081"
+    volumes:
+      - ./src/afrostream-front-end:/usr/src/app
+    build: ./afrostream-front-end
