@@ -1,0 +1,27 @@
+#!/bin/sh
+
+if [ "x$1" = "x" ]
+then
+  echo "Usage $0 [COMMAND] [OPTIONS]"
+  echo "[COMMAND] are:"
+  echo "  shell <container_id>             -- Get shell access to a specific container"
+  echo "  list                             -- List all running containers (eg: container_id)"
+  echo "  screenls <container_id>          -- list all screen running inside container"
+  echo "  screenconn <container_id> <name> -- connect to a running screen inside container"
+fi
+
+if [ "x$1" = "xshell" ]
+then
+  docker exec -t -i $2 script -q -c "/bin/bash" /dev/null
+elif [ "x$1" = "xlist" ]
+then
+  docker ps | egrep "CONTAINER|afro"
+elif [ "x$1" = "xscreenls" ]
+then
+  docker exec -t -i $2 script -q -c "/usr/bin/screen -ls" /dev/null
+elif [ "x$1" = "xscreenconn" ]
+then
+  docker exec -t -i $2 script -q -c "TERM=vt100 /usr/bin/screen -d -r $3" /dev/null
+else
+  echo "Unrecognized COMMAND $1"
+fi

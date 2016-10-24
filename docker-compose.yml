@@ -18,7 +18,7 @@ services:
      - AFROSTREAM_API_KEY=8c261045-89a3-44bb-af38-65a847269605
      - AFROSTREAM_API_SECRET=3dc3cae6-9c79-487a-9e0f-712be857dcee
      - ALLOW_URL=*
-     - API_CLIENT_END_POINT=http://afrostream-backend.herokuapp.com/api
+     - API_CLIENT_END_POINT=http://afrostreambackend/api
      - AUTH0_CALLBACK_URL=afrostream-api-v1.herokuapp.com/callback
      - AUTH0_CLIENT_ID=BtSdIqKqfIse0H1dqlpHFJgKIkUG0NpE
      - AUTH0_DOMAIN=afrostream.eu.auth0.com
@@ -33,12 +33,15 @@ services:
      - WEB_MACHINE_NAME=heroku
      - IP=0.0.0.0
      - PORT=5601
-     - NO_ASSERT=true
     build: ./afrostream-api-v1
     ports:
       - "5601:5601"
     volumes:
       - ./src/afrostream-api-v1:/usr/src/app
+    depends_on:
+      - afrostreambackend
+    links:
+      - afrostreambackend
   afrostreambackend:
     environment:
       - ALGOLIA_API_KEY=47d48040a13e973aca2ea9f492eca17e
@@ -54,12 +57,6 @@ services:
       - FACEBOOK_ID=828887693868980
       - FACEBOOK_SECRET=25130290468ec21fbefd1604218cc57c
       - GRAPHENEDB_URL=http://app39710506-KSSG0x:zU6HMofF9KLiz6FZPbvo@app39710506kssg0x.sb04.stations.graphenedb.com:24789
-      - HEROKU_APP_ID=9b9ca901-b7fd-4230-afdf-babf84a27980
-      - HEROKU_APP_NAME=afrostream-backend
-      - HEROKU_POSTGRESQL_COPPER_URL=postgres://u9u17sot1un0hr:p6o70uurl15iblacuu0g042e742@ec2-54-217-234-109.eu-west-1.compute.amazonaws.com:5552/d8kcdisl77do4k
-      - HEROKU_RELEASE_VERSION=v314
-      - HEROKU_SLUG_COMMIT=a07d2bd6e4c285633e9f8115041eeed1f37f1014
-      - HEROKU_SLUG_DESCRIPTION=Deploy c2ebd25
       - IMGIX_DOMAIN=https://afrostream.imgix.net
       - MONGOLAB_URI=mongodb://heroku_wsgfcwfr:l12bet6hdb39mcvb6vklp9vg3s@ds037581.mongolab.com:37581/heroku_wsgfcwfr
       - NODE_ENV=development
@@ -88,9 +85,9 @@ services:
       - ALGOLIA_API_KEY=3e6547172fb6d80b2ae02d6369edfc72
       - ALGOLIA_APP_ID=3OKNPL7ZVA
       - API_CLIENT_AUTHORITY=api.afrostream.tv
-      - API_CLIENT_END_POINT=https://api.afrostream.tv
-      - API_CLIENT_PROTOCOL=https
-      - API_END_POINT=http://localhost:XXXX
+      - API_CLIENT_END_POINT=http://localhost:5601/
+      - API_CLIENT_PROTOCOL=http
+      - API_END_POINT=http://localhost:5602/
       - API_IMAGES_AUTHORITY=images.cdn.afrostream.net
       - API_IMAGES_END_POINT=https://images.cdn.afrostream.net
       - API_IMAGES_PROTOCOL=https
@@ -118,9 +115,70 @@ services:
       - STRIPE_PUBLIC_KEY=pk_test_s9YFHvFFIjo2gdAL5x4k2ISh
       - YOUBORA_ID=afrostream
       - NODE_ENV=development
+      - WPHOST=0.0.0.0
+      - WPPORT=5604
+      - IP=0.0.0.0
+      - PORT=5600
     ports:
-      - "3000:3000"
-      - "8081:8081"
+      - "5600:5600"
+      - "5604:5604"
     volumes:
       - ./src/afrostream-front-end:/usr/src/app
     build: ./afrostream-front-end
+    links:
+      - afrostreamapiv1
+  afrostreambillings:
+    environment:
+      - AFR_DB_HOST=ec2-54-228-194-210.eu-west-1.compute.amazonaws.com
+      - AFR_DB_NAME=d71on7act83b7i
+      - AFR_DB_PASSWORD=pt7eht3e9v3lnehhh27m7sfeol
+      - AFR_DB_PORT=5522
+      - AFR_DB_USER=u4fp4ad34q8qvi
+      - API_HTTP_AUTH_PWD=billingsapirocks
+      - API_HTTP_AUTH_USER=admin
+      - API_HTTP_SECURE=false"
+      - BILLINGS_API_HTTP_AUTH_PWD=billingsapirocks
+      - BILLINGS_API_HTTP_AUTH_USER=admin
+      - BILLINGS_API_URL=https://afrostream-billings-staging.herokuapp.com
+      - BOUYGUES_STORE_TIME_HOUR=0
+      - BOUYGUES_STORE_TIME_MINUTE=5
+      - DATABASE_URL=postgres://postgres:postgres@afrostreambillingspostgres/postgres
+      - EVENT_EMAIL_ACTIVATED=true
+      - GOCARDLESS_API_ENV=sandbox
+      - GOCARDLESS_API_KEY=YXwxcLeTGwGv3sPd1-CpmNh3nAsqtDfzGuV8_Vji
+      - GOCARDLESS_WH_SECRET=gocardlessrocks
+      - RECURLY_API_KEY=67dbb29f0dbe4e219bc247a3b5387652
+      - RECURLY_API_SUBDOMAIN=johnarch
+      - RECURLY_WH_HTTP_AUTH_PWD=recurlyrocks
+      - RECURLY_WH_HTTP_AUTH_USER=admin
+      - SENDGRID_PASSWORD=mdaf58gf2829
+      - SENDGRID_USERNAME=app41486990@heroku.com
+      - SENDGRID_TEMPLATE_SUBSCRIPTION_NEW_ID=dde84299-e6fe-47a0-909b-1ee11417efe1
+      - SENDGRID_TEMPLATE_SUBSCRIPTION_CANCEL_ID=32685665-87ba-4c67-a726-395b58c2e36b
+      - SENDGRID_FROM=abonnement@afrostream.tv
+      - SENDGRID_FROM_NAME=Tonjé\, Fondateur d'Afrostream
+      - BOUYGUES_MERCHANTID=0
+      - BOUYGUES_SERVICEID=0
+      - BOUYGUES_PROXY_HOST=localhost
+      - BOUYGUES_PROXY_PORT=8080
+      - BOUYGUES_PROXY_USER=user
+      - BOUYGUES_PROXY_PWD=pwd
+      - SLACK_ACTIVATED=1
+      - SLACK_GROWTH_CHANNEL=growth
+      - SLACK_STATS_CHANNEL=stats
+      - SLACK_STATS_COUPONS_CHANNEL=activation
+    ports:
+      - "5605:80"   
+    volumes:
+      - ./src/afrostream-billings:/app
+    build: ./afrostream-billings
+    depends_on:
+      - afrostreambillingspostgres
+    links:
+      - afrostreambillingspostgres
+  afrostreambillingspostgres:
+    environment:
+     - POSTGRES_PASSWORD=postgres
+    volumes:
+     - ./data/billingspostgresql:/var/lib/postgresql/data
+    build: ./afrostream-billings-postgres

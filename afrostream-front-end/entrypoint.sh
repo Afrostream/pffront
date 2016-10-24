@@ -1,18 +1,25 @@
 #!/bin/sh
 
-cd /usr/src/app
+APP_PATH="/usr/src/app"
+
+echo "upgrading npm version to @3"
 npm install npm@3 -g
 
-echo "npm install all modules..."
-npm install
+cd ${APP_PATH}
+if [ ! -d "${APP_PATH}" ] 
+then
+  echo "FIRST TIME RUN: npm install all modules... This may take a while..."
 
-cd node_modules
-for i in koment-js video.js dashjs videojs-chromecast
-do
-	ln -fs afrostream-player/node_modules/$i .
-done
+  npm install
+fi
 
-cd ..
+directoryWatcherPath="node_modules/watchpack/lib/DirectoryWatcher.js"
+option="ignored: /node_modules/,"
+watchNodeModules=`cat ${directoryWatcherPath} | grep "${option}"`
+if [ "x${watchNodeModules}" = "x" ]
+then
+  sed -i "s|followSymlinks: false,|&\n${option}|" "${directoryWatcherPath}"
+fi
 
 echo "running npm run dev..."
 npm run dev
