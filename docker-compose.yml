@@ -6,6 +6,8 @@ services:
     volumes:
      - ./data/postgresql:/var/lib/postgresql/data
     build: ./afrostream-postgres
+    ports:
+     - "5700:5432"
   rabbitmq:
     environment:
      - RABBITMQ_DEFAULT_USER=rabbitmq
@@ -182,3 +184,5 @@ services:
     volumes:
      - ./data/billingspostgresql:/var/lib/postgresql/data
     build: ./afrostream-billings-postgres
+    ports:
+     - "5701:5432"
