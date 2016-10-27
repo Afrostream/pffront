@@ -25,7 +25,6 @@ RUN apk --update add \
     docker-php-ext-install gd && \
     docker-php-ext-install soap && \
     docker-php-ext-install pgsql && \
-    docker-php-ext-install soap && \
     apk del build-base && \
     rm -rf /var/cache/apk/*
 
